@@ -26,3 +26,29 @@ roleRef:
   kind: Role #this must be Role or ClusterRole
   name: expense-pod-reader # this must match the name of the Role or ClusterRole you wish to bind to
   apiGroup: rbac.authorization.k8s.io
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  namespace: expense
+  name: expense-cluster-reader
+rules:
+- apiGroups: [""] # "" indicates the core API group
+  resources: ["pods", "persistentvolumes", "nodes"]
+  verbs: ["get", "watch", "list"]
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: expense-cluster-reader
+subjects:
+- kind: User
+  name: harish
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: expense-cluster-reader
+  apiGroup: rbac.authorization.k8s.io
